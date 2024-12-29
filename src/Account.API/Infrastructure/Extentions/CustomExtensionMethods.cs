@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Account.API.Infrastructure.Filters;
+using Account.Domain.Seedwork;
 using Account.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -12,10 +13,10 @@ public static class CustomExtensionMethods
 
         services.AddDbContext<AccountDbContext>(options =>
         {
-            options.UseSqlServer(configuration["CustomerManConnectionString"], sqlServerOptionsAction: sqlOptions =>
+            options.UseSqlServer(configuration["AccountConnectionString"], sqlServerOptionsAction: sqlOptions =>
             {
                 sqlOptions.MigrationsHistoryTable("AccountMigrationsHistory");
-                sqlOptions.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name);
+                sqlOptions.MigrationsAssembly(typeof(Repository<,>).GetTypeInfo().Assembly.GetName().Name);
                 sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(60), errorNumbersToAdd: null);
             });
         },

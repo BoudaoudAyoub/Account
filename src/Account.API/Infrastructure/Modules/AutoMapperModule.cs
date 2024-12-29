@@ -2,9 +2,9 @@
 using AutoMapper;
 
 namespace Account.API.Infrastructure.Modules;
-public class AutoMapperLoad : Autofac.Module
+public class AutoMapperLoad : Module
 {
-    public void AutoMapperLoads(ContainerBuilder containerBuilder)
+    public static void AutoMapperLoads(ContainerBuilder containerBuilder)
     {
         containerBuilder.Register(context => MapperConfiguration())
                         .AsSelf()

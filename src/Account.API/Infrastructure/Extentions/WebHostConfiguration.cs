@@ -62,6 +62,7 @@ public static class WebHostConfiguration
         {
             container.RegisterModule<MediatorModule>();
             container.RegisterModule<AutoMapperLoad>();
+            container.RegisterModule<ApplicationModule>();
             //TODO: register more modules to the container builder
         };
     }

@@ -1,10 +1,9 @@
 ﻿using Account.SharedKernel.HttpReponses;
 namespace Account.Domain.Exceptions;
-public abstract class DomainException : Exception
+public class DomainException : Exception
 {
     public int StatusCode { get; set; }
     public IDictionary<int, string[]>? Errors { get; }
-
 
     public DomainException() { }
 

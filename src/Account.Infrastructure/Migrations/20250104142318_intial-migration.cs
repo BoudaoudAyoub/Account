@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Account.Infrastructure.Migrations;
 
 /// <inheritdoc />
-public partial class InitialMigration : Migration
+public partial class intialmigration : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,21 +75,21 @@ public partial class InitialMigration : Migration
             name: "ApplicationUsers",
             columns: table => new
             {
-                ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 Creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                IsDeleted = table.Column<int>(type: "int", nullable: false),
-                IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                IsDeleted = table.Column<int>(type: "int", nullable: false)
             },
             constraints: table =>
             {
                 table.PrimaryKey("PK_ApplicationUsers", x => x.ID);
                 table.ForeignKey(
-                    name: "FK_ApplicationUsers_AspNetUsers_IdentityUserId",
-                    column: x => x.IdentityUserId,
+                    name: "FK_ApplicationUsers_AspNetUsers_ID",
+                    column: x => x.ID,
                     principalTable: "AspNetUsers",
-                    principalColumn: "Id");
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
@@ -175,11 +176,6 @@ public partial class InitialMigration : Migration
                     principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
             });
-
-        migrationBuilder.CreateIndex(
-            name: "IX_ApplicationUsers_IdentityUserId",
-            table: "ApplicationUsers",
-            column: "IdentityUserId");
 
         migrationBuilder.CreateIndex(
             name: "IX_AspNetRoleClaims_RoleId",

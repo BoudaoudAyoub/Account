@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Account.Infrastructure.Migrations
 {
     [DbContext(typeof(AccountDbContext))]
-    [Migration("20241229193800_initial-migration")]
-    partial class InitialMigration
+    [Migration("20250104142318_intial-migration")]
+    partial class intialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,8 @@ namespace Account.Infrastructure.Migrations
 
             modelBuilder.Entity("Account.Domain.Aggregates.UserAggregate.ApplicationUser", b =>
                 {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Creator")
                         .IsRequired()
@@ -39,9 +38,6 @@ namespace Account.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IdentityUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("IsDeleted")
                         .HasColumnType("int");
 
@@ -50,8 +46,6 @@ namespace Account.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("ApplicationUsers");
                 });
@@ -257,8 +251,10 @@ namespace Account.Infrastructure.Migrations
             modelBuilder.Entity("Account.Domain.Aggregates.UserAggregate.ApplicationUser", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
-                        .WithMany()
-                        .HasForeignKey("IdentityUserId");
+                        .WithOne()
+                        .HasForeignKey("Account.Domain.Aggregates.UserAggregate.ApplicationUser", "ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("IdentityUser");
                 });

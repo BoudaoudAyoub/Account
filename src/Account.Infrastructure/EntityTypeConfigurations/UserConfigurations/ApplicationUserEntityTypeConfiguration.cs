@@ -11,5 +11,9 @@ public class ApplicationUserEntityTypeConfiguration : IEntityTypeConfiguration<A
         builder.Property(user => user.Creator).IsRequired();
         builder.Property(user => user.LastName).IsRequired();
         builder.Property(user => user.FirstName).IsRequired();
+
+        builder.HasOne(user => user.IdentityUser)
+               .WithOne()
+               .HasForeignKey<ApplicationUser>(user => user.ID);
     }
 }

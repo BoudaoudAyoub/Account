@@ -7,7 +7,7 @@ public interface IRepository<TEntity, Tkey> where TEntity : AggregateRoot<Tkey>
 
     IQueryable<TEntity> GetAllAsQueryable();
 
-    Task<TEntity?> GetByIdAsync(Tkey keyValue, CancellationToken cancellationToken);
+    Task<TEntity> GetByIdAsync(Tkey keyValue, CancellationToken cancellationToken);
 
     void UpdateSingle(TEntity entity);
 

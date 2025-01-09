@@ -1,19 +1,31 @@
 ﻿using Account.Domain.Seedwork;
 using Microsoft.AspNetCore.Identity;
 namespace Account.Domain.Aggregates.UserAggregate;
-public class ApplicationUser : AggregateRoot<Guid>
+public class ApplicationUser : AggregateRoot<string>
 {
     public required string Creator { get; set; }
-    public required string FirstName { get; set; }
-    public required string LastName { get; set; }
-    public int IsDeleted { get; set; } = 0;
-    public IdentityUser IdentityUser { get; set; } = default!;
+    public string FirstName { get; private set; } = default!;
+    public string LastName { get; private set; } = default!;
+    public bool IsDeleted { get; set; } = default!;
+    public IdentityUser IdentityUser { get; private set; } = default!;
 
     public ApplicationUser() { }
 
-    public ApplicationUser(string firstName, string lastName, string userName, string password)
+    public ApplicationUser(string userId, string firstName, string lastName)
     {
+        ID = userId;
         FirstName = firstName;
         LastName = lastName;        
+    }
+
+    public void UpdateUser(string firstName, string lastName)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+    }
+
+    public void DeleteUser()
+    {
+        throw new NotImplementedException();
     }
 }

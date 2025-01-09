@@ -26,10 +26,10 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
 
     public IQueryable<TEntity> GetAllAsQueryable() => DbSet.AsNoTracking().AsQueryable();
 
-    public async Task<TEntity?> GetByIdAsync(TKey keyValue, CancellationToken cancellationToken)
+    public async Task<TEntity> GetByIdAsync(TKey keyValue, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(keyValue);
-        return await DbSet.FindAsync(keyValues: [keyValue], cancellationToken: cancellationToken);
+        return await DbSet.FindAsync(keyValues: [keyValue], cancellationToken: cancellationToken) ?? default!;
     }
 
     public void UpdateSingle(TEntity entity) => DbSet.Update(entity);

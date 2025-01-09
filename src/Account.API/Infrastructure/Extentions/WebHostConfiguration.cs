@@ -1,9 +1,12 @@
 ﻿using Autofac;
 using Serilog;
 using System.Net;
+using Account.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Account.API.Infrastructure.Modules;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Account.API.Infrastructure.Modules.AutoMapper;
 namespace Account.API.Infrastructure.Extentions;
 
 public static class WebHostConfiguration
@@ -19,7 +22,8 @@ public static class WebHostConfiguration
                                  .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                                  .ConfigureServices(ConfigureServices(configuration))
                                  .Configure(ConfigureApplication())
-                                 .UseContentRoot(Directory.GetCurrentDirectory());
+                                 .UseContentRoot(Directory.GetCurrentDirectory())                       
+                                 .UseUrls($"https://localhost:403");
                    })
                    .ConfigureContainer(ConfigureContainers())
                    .UseSerilog()
@@ -30,7 +34,7 @@ public static class WebHostConfiguration
     {
         return options =>
         {
-            options.Listen(IPAddress.Any, 80, listenOptions =>
+            options.Listen(IPAddress.Any, 403, listenOptions =>
             {
                 listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
             });
@@ -45,6 +49,9 @@ public static class WebHostConfiguration
             services.AddCustomSwagger(configuration);
             services.AddCustomConfiguration(configuration);
             services.AddAutofac();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                    .AddEntityFrameworkStores<AccountDbContext>()
+                    .AddDefaultTokenProviders();
         };
     }
 

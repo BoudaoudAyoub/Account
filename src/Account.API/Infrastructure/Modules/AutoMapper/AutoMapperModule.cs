@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using AutoMapper;
 
-namespace Account.API.Infrastructure.Modules;
+namespace Account.API.Infrastructure.Modules.AutoMapper;
 public class AutoMapperLoad : Module
 {
     public static void AutoMapperLoads(ContainerBuilder containerBuilder)

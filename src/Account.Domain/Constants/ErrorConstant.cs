@@ -8,4 +8,6 @@ public static class ErrorConstant
     public const string ROLE_COULD_NOT_BE_ADDED = "Role coul not be assigned";
     public const string CONNECTION_STRING_CANNOT_BE_NULL = "Connection string cannot be null";
     public const string SYSTEM_INVALID_DATA_MESSAGE = "The system couldn't recognize the provided data. Please ensure the input is correct";
+    public const string USERNAME_DOES_NOT_EXISTS = "Username does not exist";
+    public const string INVALID_USER_CREDENTIALS = "Invalid user credentials. Please verify and try again";
 }

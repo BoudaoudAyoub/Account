@@ -51,7 +51,11 @@ public class CustomExceptionFilter(ILogger<CustomExceptionFilter> exceptionFilte
         }
 
         context.ExceptionHandled = true;
-        context.Result = new ObjectResult(new { Failures = exceptionRoot });
+        context.Result = new ObjectResult(new
+        {
+            Status = HttpResponseJsonType.Failure,
+            Failures = exceptionRoot 
+        });
         _exceptionFilterLogger.LogError(new EventId(context.Exception.HResult), string.Format("@exceptionRoot", exceptionRoot));
     }
 }

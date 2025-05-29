@@ -67,6 +67,12 @@ public static class CustomExtensionMethods
 
         app.UseAuth();
 
+        app.UseCors(op => 
+            op.AllowAnyHeader()
+              .AllowAnyOrigin()
+              .AllowAnyMethod()
+        );
+
         app.UseRouting();
 
         app.UseEndpoints(endpoint =>

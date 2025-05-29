@@ -7,6 +7,7 @@ using Account.API.Application.Models;
 using Account.SharedKernel.HttpReponses;
 using Account.API.Application.Commands.UserAccountCommands;
 using Account.API.Application.Queries.UserAccounts.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 namespace Account.API.Controllers.AccountController;
 public class UserAccountsController(ILogger<UserAccountsController> logger,
     IMediator mediator,
@@ -18,6 +19,15 @@ public class UserAccountsController(ILogger<UserAccountsController> logger,
     private readonly IMediator _mediator = mediator;
     private readonly ILogger<UserAccountsController> _logger = logger;
     private readonly IUserAccountQuery _userAccountQuery = userAccountQuery;
+
+    [AllowAnonymous]
+    [HttpPost("login")]
+    [ProducesResponseType(typeof(int), HttpResponseType.Ok)]
+    [ProducesResponseType(typeof(int), HttpResponseType.NotFound)]
+    public async Task<UserToken> Login(UserAccountCredentialModel userAccountCredentialModel)
+    => new(await _userAccountQuery.LoginAsync(userAccountCredentialModel));
+
+    public record UserToken(string Token);
 
     /// <summary>
     /// Creates a new user account

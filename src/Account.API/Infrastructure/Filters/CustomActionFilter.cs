@@ -28,6 +28,7 @@ public class CustomActionFilter(ILogger<CustomActionFilter> logger) : IActionFil
                 string action = context.RouteData.Values["action"]?.ToString() ?? string.Empty;
                 result.StatusCode = action switch
                 {
+                    var value when value.StartsWith(HttpRequestMethods.Login, StringComparison.OrdinalIgnoreCase) => HttpResponseType.Ok,
                     var value when value.StartsWith(HttpRequestMethods.Create, StringComparison.OrdinalIgnoreCase) => HttpResponseType.Created,
                     var value when value.StartsWith(HttpRequestMethods.Get, StringComparison.OrdinalIgnoreCase) => HttpResponseType.Ok,
                     var value when value.StartsWith(HttpRequestMethods.Update, StringComparison.OrdinalIgnoreCase) => HttpResponseType.Ok,
@@ -40,6 +41,7 @@ public class CustomActionFilter(ILogger<CustomActionFilter> logger) : IActionFil
 
             result.Value = new
             {
+                Status = HttpResponseJsonType.Success,
                 Message = string.Join(controller, GetResultMessage(result.StatusCode)),
                 Data = result.Value
             };

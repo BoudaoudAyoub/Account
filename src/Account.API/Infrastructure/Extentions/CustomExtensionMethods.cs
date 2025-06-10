@@ -15,7 +15,7 @@ public static class CustomExtensionMethods
         {
             options.UseSqlServer(configuration["AccountConnectionString"], sqlServerOptionsAction: sqlOptions =>
             {
-                sqlOptions.MigrationsHistoryTable("AccountMigrationsHistory");
+                sqlOptions.MigrationsHistoryTable("_accountMigrationsHistory");
                 sqlOptions.MigrationsAssembly(typeof(Repository<,>).GetTypeInfo().Assembly.GetName().Name);
                 sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(60), errorNumbersToAdd: null);
             });

@@ -7,6 +7,7 @@ using Account.API.Infrastructure.Modules;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Account.API.Infrastructure.Modules.AutoMapper;
+using Account.API.Infrastructure.Seed;
 namespace Account.API.Infrastructure.Extentions;
 
 public static class WebHostConfiguration
@@ -52,6 +53,8 @@ public static class WebHostConfiguration
             services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddEntityFrameworkStores<AccountDbContext>()
                     .AddDefaultTokenProviders();
+
+            services.Seeder();
         };
     }
 

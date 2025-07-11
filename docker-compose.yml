@@ -1,0 +1,28 @@
+# version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Aa123465.
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+  accountapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - sqlserver
+    environment:
+      - AccountConnectionString=Server=sqlserver;Database=accountDb;User Id=sa;Password=Aa123465.;TrustServerCertificate=True;
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "4500:80"
+
+volumes:
+  sqlserver-data:

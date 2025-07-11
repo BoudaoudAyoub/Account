@@ -13,6 +13,8 @@ public static class SerilogConfiguration
                                .MinimumLevel.Verbose() // Set the minimum log level to Verbose to capture detailed log data
                                .Enrich.WithProperty("AccountContextLog", "Program") // Add a fixed property "AccountContextLog" with the application name to all log entries
                                .Enrich.FromLogContext() // Enrich log events with additional contextual properties (like thread id, etc.)
+                               .WriteTo.Debug()
+                               .WriteTo.Console()
                                .WriteTo.File("Logs/.txt", rollingInterval: RollingInterval.Day) // Write log events to a text file, creating a new file every day
                                .CreateLogger(); // Build and return the configured logger
     }

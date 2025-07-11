@@ -23,8 +23,8 @@ public static class WebHostConfiguration
                                  .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                                  .ConfigureServices(ConfigureServices(configuration))
                                  .Configure(ConfigureApplication())
-                                 .UseContentRoot(Directory.GetCurrentDirectory())                       
-                                 .UseUrls($"https://localhost:403");
+                                 .UseContentRoot(Directory.GetCurrentDirectory());                       
+                                 //.UseUrls($"http://localhost:8080");
                    })
                    .ConfigureContainer(ConfigureContainers())
                    .UseSerilog()

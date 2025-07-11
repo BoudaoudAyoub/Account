@@ -63,7 +63,7 @@ public static class CustomExtensionMethods
     {
         if (env.IsDevelopment()) app.UseSwagger();
 
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
 
         app.UseAuth();
 

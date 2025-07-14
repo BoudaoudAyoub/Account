@@ -23,8 +23,8 @@ public static class WebHostConfiguration
                                  .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
                                  .ConfigureServices(ConfigureServices(configuration))
                                  .Configure(ConfigureApplication())
-                                 .UseContentRoot(Directory.GetCurrentDirectory());                       
-                                 //.UseUrls($"http://localhost:8080");
+                                 .UseContentRoot(Directory.GetCurrentDirectory())                   
+                                 .UseUrls($"http://localhost:8080");
                    })
                    .ConfigureContainer(ConfigureContainers())
                    .UseSerilog()
@@ -35,7 +35,7 @@ public static class WebHostConfiguration
     {
         return options =>
         {
-            options.Listen(IPAddress.Any, 403, listenOptions =>
+            options.Listen(IPAddress.Any, 80, listenOptions =>
             {
                 listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
             });

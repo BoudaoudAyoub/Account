@@ -3,7 +3,9 @@ using Account.Domain.Constants;
 using Microsoft.AspNetCore.Identity;
 using Account.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using Account.Domain.Aggregates.UserAggregate;
+using Serilog;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 namespace Account.API.Infrastructure.Seed;
 
 public static class SeedData
@@ -14,8 +16,19 @@ public static class SeedData
 
         AccountDbContext accountDbContext = serviceProvider.GetRequiredService<AccountDbContext>();
 
-        if (!accountDbContext.Database.CanConnect()) accountDbContext.Database.Migrate();
+        RelationalDatabaseCreator dbCreator = accountDbContext.GetService<IDatabaseCreator>() as RelationalDatabaseCreator ?? default!;
 
+        if (dbCreator is null)
+        {
+            Log.Error("Database creator is not available.");
+            return;
+        }
+
+        if (!dbCreator.Exists())
+        {
+            Log.Information("Started database migration...");
+            accountDbContext.Database.Migrate();
+        }
         try
         {
             // Check and add identity roles if not exits
@@ -56,9 +69,9 @@ public static class SeedData
                     UserId = user.Id
                 });
 
-                accountDbContext.ApplicationUsers.Add(new(user.Id, SystemConstants.SYSTEM_FIRSTNAME, SystemConstants.SYSTEM_LASTNAME) 
+                accountDbContext.ApplicationUsers.Add(new(user.Id, SystemConstants.SYSTEM_FIRSTNAME, SystemConstants.SYSTEM_LASTNAME)
                 {
-                    Creator = SystemConstants.ADMIN_USERNAME 
+                    Creator = SystemConstants.ADMIN_USERNAME
                 });
 
                 accountDbContext.SaveChanges();
